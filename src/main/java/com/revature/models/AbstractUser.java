@@ -25,6 +25,8 @@ public class AbstractUser {
     private String username;
     private String password;
     private Role role;
+//    private String firstname; //added by me
+//    private String lastname; //added by me
 
     public AbstractUser() {
         super();
@@ -36,6 +38,8 @@ public class AbstractUser {
         this.username = username;
         this.password = password;
         this.role = role;
+//        this.firstname = firstname; //added
+//        this.lastname = lastname; //added 
     }
 
     public int getId() {
@@ -49,7 +53,21 @@ public class AbstractUser {
     public String getUsername() {
         return username;
     }
-
+//        public String getFirstname() { //added
+//    	return firstname;
+//    }
+//    
+//    public String getLastname() { //added
+//    	return lastname;
+//    }
+//
+//    public void setFirstname(String firstname) { //added
+//    	this.firstname = firstname;
+//    }
+//    
+//    public void setLastname(String lastname) { //added
+//    	 this.lastname = lastname;
+//   }
     public void setUsername(String username) {
         this.username = username;
     }
@@ -77,6 +95,7 @@ public class AbstractUser {
         AbstractUser that = (AbstractUser) o;
         return id == that.id && Objects.equals(username, that.username) && Objects.equals(password, that.password) && role == that.role;
     }
+    
 
     @Override
     public int hashCode() {
@@ -87,7 +106,7 @@ public class AbstractUser {
     public String toString() {
         return "AbstractUser{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username or email='" + username + '\'' + //email added
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';

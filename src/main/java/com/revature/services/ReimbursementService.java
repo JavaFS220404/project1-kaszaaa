@@ -1,9 +1,11 @@
 package com.revature.services;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.Status;
 import com.revature.models.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +27,21 @@ import java.util.List;
  * </ul>
  */
 public class ReimbursementService {
-
+	private static final boolean Reimbursement = false;
+	List<Reimbursement> reimbursement = new ArrayList<>();
+	AuthService authserv = new AuthService();
+	
+	
+	
+	class WrongRole extends Exception
+	{
+		public WrongRole() {};
+		
+		public WrongRole(String message)
+		{
+			super(message);
+		}
+	}
     /**
      * <ul>
      *     <li>Should ensure that the user is logged in as a Finance Manager</li>
@@ -41,9 +57,31 @@ public class ReimbursementService {
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
     public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
-        return null;
+    
+    	try {
+    		for (User iteratedUser : authserv.users) {
+    			if (iteratedUser.getRole().equals(Role.FINANCE_MANAGER)) {
+    				System.out.println("Access Granted! Welcome!");
+    				System.out.println("Nie wiem po czym to wybierac, ale choose reimbursement");
+    		for (Reimbursement iteratedReimbursement : reimbursement) {
+    			if (iteratedReimbursement.getStatus().equals(Status.PENDING) | iteratedReimbursement.getStatus().equals(Status.APPROVED) | iteratedReimbursement.getStatus().equals(Status.DENIED)) {
+    				return unprocessedReimbursement;
+    			}else {
+    				return null;
+    			}
+    		}
+    				
+    				
+    				return unprocessedReimbursement;
+    			} else {
+    				throw new WrongRole();
+    			}
+    		}
+    	} catch (WrongRole ex) {
+			System.out.println("Wrong role! Please log in as a finance manager!");
+			return null;}
+		return null;
     }
-
     /**
      * Should retrieve all reimbursements with the correct status.
      */
