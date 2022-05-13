@@ -81,49 +81,6 @@ async function register(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function revealDivs(){
   let divs = document.getElementsByTagName("div");
 
@@ -199,6 +156,7 @@ async function ReimbGetByStatus(list){
     let submitted = document.createElement("td");
     let description = document.createElement("td");
     let statusId = document.createElement("td");
+    let status = document.createElement("td");
     let typeId = document.createElement("td");
     let author = document.createElement("td");
     let resolver = document.createElement("td");
@@ -208,10 +166,9 @@ async function ReimbGetByStatus(list){
     id.innerText = createReimb.id;
     amount.innerText = createReimb.amount;
     submitted.innerText = createReimb.submitted;
-   
     description.innerText = createReimb.description;
-   
-    statusId.innerText = createReimb.statusId
+    statusId.innerText = createReimb.statusId;
+    status.innerText = createReimb.status;
     typeId.innerText = createReimb.typeId;
     author.innerText = createReimb.author.firstname+" "+createReimb.author.lastname;
 	resolver.innerText = createReimb.resolver.firstname+" "+createReimb.resolver.lastname;
@@ -222,8 +179,8 @@ async function ReimbGetByStatus(list){
     row.appendChild(description);
     row.appendChild(statusId);
     row.appendChild(typeId);
-    
     row.appendChild(statusId);
+    row.appendChild(status);
     row.appendChild(submitted)
     row.appendChild(author);
     row.appendChild(resolver);
