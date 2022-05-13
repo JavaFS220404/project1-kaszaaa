@@ -5,10 +5,15 @@ package com.revature;
 //import java.util.List;
 import java.util.Scanner;
 
+import com.revature.models.AbstractReimbursement;
 import com.revature.models.AbstractUser;
+import com.revature.models.Reimbursement;
 //import com.revature.models.Role;
 import com.revature.models.User;
+import com.revature.repositories.ReimbursementDAO;
+import com.revature.repositories.UserDAO;
 import com.revature.services.AuthService;
+import com.revature.services.ReimbursementService;
 
 public class Driver {
 
@@ -30,6 +35,10 @@ public class Driver {
 //    }
 //}
 		AuthService authserv = new AuthService();
+		ReimbursementService reimbserv = new ReimbursementService();
+		UserDAO userdao = new UserDAO();
+		String username = new String();
+		String password = new String();
 
     	boolean exit = false;
 		while(!exit) {
@@ -53,7 +62,7 @@ public class Driver {
 						System.out.println("Goodbye! Thanks for using the application!");
 						break; 
 					case "1":
-						authserv.login(user.getUsername(), user.getPassword());
+						authserv.login(username, password);
 						break choiceSwitch;
 					case "2":
 						User newuser = new User();
@@ -61,11 +70,24 @@ public class Driver {
 //						System.out.println(newuser);
 						break choiceSwitch;
 					case "3":
-						String username = new String();
 						authserv.getByUsername(username);
 					case "4":
 						Integer userid = Integer.valueOf(scan.nextLine());
 						authserv.getByUserId(userid);
+					case "5":
+						ReimbursementDAO reimbdao = new ReimbursementDAO();
+						Reimbursement reimb = new Reimbursement();
+						//AbstractReimbursement reimbab = new AbstractReimbursement();
+						System.out.println("Please enter your first name: ");
+				    	reimb.reimbdao.update(setAmount(Double.valueOf(scan.nextLine())));
+				    	System.out.println("Please enter your last name: ");
+				    	userToBeRegistered.setLastname(scan.nextLine());
+				        System.out.println("Please set the Username ");
+				        System.out.println("Please set the Email ");
+				        userToBeRegistered.setEmail(scan.nextLine())
+						System.out.println("Please pass the id: ");
+						reimbserv.getById(Integer.valueOf(scan.nextLine()));
+						
 						
     	}
     }

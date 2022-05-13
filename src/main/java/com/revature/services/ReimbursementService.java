@@ -1,13 +1,21 @@
 package com.revature.services;
 
+import com.revature.exceptions.ReimbursementExistanceException;
+import com.revature.exceptions.UnsuccessfulCreationofReimbursement;
+import com.revature.exceptions.WrongRoleException;
 import com.revature.models.Reimbursement;
 import com.revature.models.Role;
 import com.revature.models.Status;
 import com.revature.models.User;
+import com.revature.repositories.ReimbursementDAO;
+import com.revature.repositories.UserDAO;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 /**
  * The ReimbursementService should handle the submission, processing,
@@ -27,21 +35,14 @@ import java.util.List;
  * </ul>
  */
 public class ReimbursementService {
-	private static final boolean Reimbursement = false;
-	List<Reimbursement> reimbursement = new ArrayList<>();
+	
+	Scanner scan = new Scanner(System.in);
 	AuthService authserv = new AuthService();
+	private ReimbursementDAO reimbdao = new ReimbursementDAO();
 	
 	
 	
-	class WrongRole extends Exception
-	{
-		public WrongRole() {};
-		
-		public WrongRole(String message)
-		{
-			super(message);
-		}
-	}
+
     /**
      * <ul>
      *     <li>Should ensure that the user is logged in as a Finance Manager</li>
@@ -56,36 +57,68 @@ public class ReimbursementService {
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
-    
-    	try {
-    		for (User iteratedUser : authserv.users) {
-    			if (iteratedUser.getRole().equals(Role.FINANCE_MANAGER)) {
-    				System.out.println("Access Granted! Welcome!");
-    				System.out.println("Nie wiem po czym to wybierac, ale choose reimbursement");
-    		for (Reimbursement iteratedReimbursement : reimbursement) {
-    			if (iteratedReimbursement.getStatus().equals(Status.PENDING) | iteratedReimbursement.getStatus().equals(Status.APPROVED) | iteratedReimbursement.getStatus().equals(Status.DENIED)) {
+    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) throws WrongRoleException{
+    	
+    	List<Reimbursement> list = reimbdao.getByStatus(finalStatus);
+    		if (resolver.getRole().equals(Role.FINANCE_MANAGER)) {
+    			
+    			if (unprocessedReimbursement.getStatus().equals(Status.PENDING)) {
+    				unprocessedReimbursement.setResolver(resolver);
+    				unprocessedReimbursement.setStatus(finalStatus);
     				return unprocessedReimbursement;
     			}else {
-    				return null;
-    			}
-    		}
+    				throw new ReimbursementExistanceException();
     				
-    				
-    				return unprocessedReimbursement;
-    			} else {
-    				throw new WrongRole();
-    			}
     		}
-    	} catch (WrongRole ex) {
-			System.out.println("Wrong role! Please log in as a finance manager!");
-			return null;}
-		return null;
-    }
+    		}else {
+    			throw new WrongRoleException();
+    			}}
+			
+    	
     /**
      * Should retrieve all reimbursements with the correct status.
      */
     public List<Reimbursement> getReimbursementsByStatus(Status status) {
-        return Collections.emptyList();
+    	
+    	List<Reimbursement> reimbursement = reimbdao.getByStatus(status);
+    	//Status statusid = Status.valueOf(scan.nextLine());
+		if (status != null) {
+			System.out.println(reimbursement);
+			return reimbursement;
+		}else {
+			System.out.println("1 that reimbursement does not exist in the database.");
+			return null;
+		}
     }
-}
+    public Optional<ReimbursementDAO> getById(int id) {
+		if (reimbdao.getById(id) != null) {
+			System.out.println(reimbdao.getById(id));
+			return Optional.ofNullable(reimbdao);
+		}else {
+			System.out.println("2 that reimbursement does not exist in the database.");
+			return null;
+		}}
+
+    public List<Reimbursement> getAllReimb(){
+    	return reimbdao.getAllReimb();
+    }
+
+
+
+
+    public boolean createReimbursement(Reimbursement reimbursement) throws UnsuccessfulCreationofReimbursement{
+    	return reimbdao.createReimbursement(reimbursement);
+//    }
+//		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//		Reimbursement reimb = new Reimbursement(reimbursement.getAmount(), timestamp, reimbursement.getDescription(), reimbursement.getReimbType());
+//		if (reimbdao.createReimbursement(reimb)) {
+//			return true;
+//		}throw new UnsuccessfulCreationofReimbursement();
+//		
+    }
+	}
+	
+    	
+    	
+
+

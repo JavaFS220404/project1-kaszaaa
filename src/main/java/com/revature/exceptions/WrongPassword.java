@@ -1,6 +1,6 @@
 package com.revature.exceptions;
 
-public class WrongPassword extends Exception
+public class WrongPassword extends RuntimeException
 {
 	public WrongPassword() {};
 	

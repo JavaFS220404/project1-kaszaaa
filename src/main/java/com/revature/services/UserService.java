@@ -1,18 +1,14 @@
 package com.revature.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
-import com.revature.exceptions.ExistException;
-import com.revature.exceptions.WrongPassword;
-import com.revature.util.ConnectionFactory;
 
 /**
  * The UserService should handle the processing and retrieval of Users for the ERS application.
@@ -31,16 +27,24 @@ import com.revature.util.ConnectionFactory;
  */
 public class UserService {
 	List<User> users = new ArrayList<>();
-	
+	private UserDAO userdao = new UserDAO();
 	/**
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
+	
+		
+	
 	public Optional<UserDAO> getByUsername(String username) {
 		UserDAO userdao = new UserDAO();
 		userdao.getByUsername(username);
 		return Optional.ofNullable(userdao);
-	//return Optional.empty();
-			}
+		}
+	
+	public Optional<UserDAO> getByPassword(String password) {
+		UserDAO userdao = new UserDAO();
+		userdao.getByUsername(password);
+		return Optional.ofNullable(userdao);
+		}
 			
 //	public Optional<UserDAO> getByUserId(int id) {
 //		UserDAO userdao = new UserDAO();
@@ -61,7 +65,12 @@ public class UserService {
 		return userToBeRegistered;
 		
 
-	}}
+	
+	
+	}
+
+	
+	}
 	
 	
 

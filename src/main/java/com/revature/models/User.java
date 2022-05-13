@@ -34,13 +34,13 @@ public class User extends AbstractUser {
      * If other fields are needed, please create additional constructors.
      */
 
-    public User(int id, String username, String password, Role role, String firstname, String lastname, String email, int roleId) {
-        super(id, username, password, role);
+//    public User(int id, String username, String password, Role role, String firstname, String lastname, String email, int roleId) {
+//        super(id, username, password, role);
 //        this.setFirstname(firstname);
 //        this.setLastname(lastname);
         
         
-    }
+ //   }
 //
 //	public User(String firstname, String lastname, String email) {
 //		super();
@@ -51,28 +51,12 @@ public class User extends AbstractUser {
 //
 //	
 //
-	public User(String username, String password, String role, String firstname, String lastname, String email, int roleId) {
+	public User(String username, String password, Role role, String firstname, String lastname, String email, int roleId) {
+		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 		this.roleId = roleId;
-	}
-
-	
-	public int getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getFirstname() {
@@ -90,15 +74,28 @@ public class User extends AbstractUser {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
 
-	
-	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(email, firstname, lastname);
+		result = prime * result + Objects.hash(email, firstname, lastname, roleId);
 		return result;
 	}
 
@@ -112,14 +109,17 @@ public class User extends AbstractUser {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname)
-				&& Objects.equals(lastname, other.lastname);
+				&& Objects.equals(lastname, other.lastname) && roleId == other.roleId;
 	}
 
 	@Override
 	public String toString() {
-		return "User [firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + ", toString()=" + super.toString() + "]";
+		return "User [firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + ", roleId=" + roleId
+				+ "]";
 	}
 
+	
+	
 	
 }
 

@@ -39,6 +39,11 @@ public class AbstractReimbursement {
         this.resolver = resolver;
         this.amount = amount;
     }
+    
+    public AbstractReimbursement(double amount) {
+        super();
+        this.amount = amount;
+    }
 
     public int getId() {
         return id;

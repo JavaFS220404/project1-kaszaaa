@@ -4,14 +4,17 @@ import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Optional;
 
 public class UserDAO {
-
+//	private int pUserEx;
+//	private int pLogin;
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
@@ -35,7 +38,8 @@ public class UserDAO {
 				user.setEmail(result.getString("user_email"));
 				user.setRoleId(result.getInt("user_role_id"));
 				
-				return Optional.ofNullable(user);
+				Optional<User>  optional = Optional.of(user); //changes!!!!!
+				return optional; // changes!!!
 			}
 			
 		}catch(SQLException e) {
@@ -45,7 +49,7 @@ public class UserDAO {
 		return Optional.empty();
 	}
       
-    public User getByUserId(int id) {   //Optional<User> getByUserId(int id) {
+     public User getByUserId(int id) {   //Optional<User> getByUserId(int id) {
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 			String sql = "SELECT * FROM ers_users WHERE ers_users_id = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -74,8 +78,8 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		
-		return null; //Optional.empty();
-	}
+		return null;} //Optional.empty();
+
 
     /**
      * <ul>
@@ -88,8 +92,8 @@ public class UserDAO {
      * Additional fields may be null.
      */
     public User create(User userToBeRegistered) {
-try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-    		
+    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
     		String sql = "INSERT INTO ers_users (ERS_USERNAME, ERS_PASSWORD, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_ROLE_ID) "
     				+"VALUES (?, ?, ?, ?, ?, ?)";
 			
@@ -104,14 +108,37 @@ try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 			statement.setString(++count, userToBeRegistered.getLastname());
 			statement.setString(++count, userToBeRegistered.getEmail());
 			statement.setInt(++count, userToBeRegistered.getRoleId());
-		
-			statement.execute();
-	    
+			ResultSet result = statement.executeQuery();
+			User user = new User();
+			int userRoleId = result.getInt("user_role_id");
+			if (userRoleId == 1) {
+				user.setRole(Role.EMPLOYEE);
+			}else{
+				user.setRole(Role.FINANCE_MANAGER);
+				
 	        return userToBeRegistered;
 	        
-    	}catch(SQLException e) {
+    	}}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
     }
+
+//	public int getpUserEx() {
+//		return pUserEx;
+//	}
+//
+//	public void setpUserEx(int pUserEx) {
+//		this.pUserEx = pUserEx;
+//	}
+//
+//	public int getpLogin() {
+//		return pLogin;
+//	}
+//
+//	public void setpLogin(int pLogin) {
+//		this.pLogin = pLogin;
+//	}
+
+	
 }
