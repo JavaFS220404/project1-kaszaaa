@@ -92,6 +92,11 @@ public class UserDAO {
      * Additional fields may be null.
      */
     public User create(User userToBeRegistered) {
+    	int tempValue = 1;
+		if(userToBeRegistered.getRoleId() == 1) {tempValue = 1;}
+		else if(userToBeRegistered.getRoleId() == 2) {tempValue = 2;}
+		
+		System.out.println(tempValue);
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
     		String sql = "INSERT INTO ers_users (ERS_USERNAME, ERS_PASSWORD, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_ROLE_ID) "
@@ -107,7 +112,7 @@ public class UserDAO {
 			statement.setString(++count, userToBeRegistered.getFirstname());
 			statement.setString(++count, userToBeRegistered.getLastname());
 			statement.setString(++count, userToBeRegistered.getEmail());
-			statement.setInt(++count, userToBeRegistered.getRoleId());
+			statement.setInt(++count, tempValue);
 			ResultSet result = statement.executeQuery();
 			User user = new User();
 			int userRoleId = result.getInt("user_role_id");
